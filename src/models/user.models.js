@@ -52,7 +52,7 @@ const userSchema = new mongoose.Schema(
 userSchema.pre("save", async function (next) {
   // isModified is built in method provide by mongoose for pre and post hooks to check if the value is modified in that certain instance
   if (!this.isModified("password")) return next();
-  this.password = bcrypt.hash(this.password, 10);
+  this.password = await bcrypt.hash(this.password, 10);
   next();
 });
 
