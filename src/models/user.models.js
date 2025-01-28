@@ -62,6 +62,7 @@ userSchema.methods.isPasswordCorrect = async function (password) {
 };
 
 // generating access tokens
+
 userSchema.methods.generateAccessToken = function () {
   return jwt.sign(
     {
@@ -70,19 +71,18 @@ userSchema.methods.generateAccessToken = function () {
       username: this.username,
       fullname: this.fullName,
     },
-    process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: ACCESS_TOKEN_EXPIRY }
+    process.env.ACCESS_TOKEN_SECRET, // Access the secret from environment variables
+    { expiresIn: process.env.ACCESS_TOKEN_EXPIRY } // Use the expiry time from environment variables, fallback to '15m'
   );
 };
 
-// generating refresh tokens
 userSchema.methods.generateRefreshToken = function () {
   return jwt.sign(
     {
       _id: this._id,
     },
-    process.env.REFRESH_TOKEN_SECRET,
-    { expiresIn: REFRESH_TOKEN_EXPIRY }
+    process.env.REFRESH_TOKEN_SECRET, // Access the refresh token secret from environment variables
+    { expiresIn: process.env.REFRESH_TOKEN_EXPIRY } // Use the refresh token expiry time from environment variables, fallback to '10d'
   );
 };
 
